@@ -23,7 +23,7 @@ type AvailableTimesHeaderProps = {
 
 export const AvailableTimesHeader = ({
   date,
-  showTimeFormatToggle = true,
+  showTimeFormatToggle = false,
   availableMonth,
   customClassNames,
 }: AvailableTimesHeaderProps) => {
