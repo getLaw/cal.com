@@ -18,7 +18,7 @@ const PoweredByCal = ({ logoOnly }: { logoOnly?: boolean }) => {
         {APP_NAME === "Cal.com" || !hasValidLicense ? (
           <>
             <img
-              className="relative -mt-px inline h-[30px] w-auto dark:invert"
+              className="relative -mt-px inline !h-[30px] w-auto dark:invert"
               src="/mr/meibers_logo.jpg"
               alt="meibers.rechtsanwälte Logo"
             />
