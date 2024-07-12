@@ -23,7 +23,7 @@ type AvailableTimesHeaderProps = {
 
 export const AvailableTimesHeader = ({
   date,
-  showTimeFormatToggle = false,
+  showTimeFormatToggle = true,
   availableMonth,
   customClassNames,
 }: AvailableTimesHeaderProps) => {
@@ -65,7 +65,7 @@ export const AvailableTimesHeader = ({
         </span>
       </span>
 
-      {showTimeFormatToggle && (
+      {false && (
         <div className="ml-auto rtl:mr-auto">
           <TimeFormatToggle customClassName={customClassNames?.availableTimeSlotsTimeFormatToggle} />
         </div>
