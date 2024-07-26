@@ -44,21 +44,31 @@ export const formatEventFromToTime = ({
   const endDate = duration
     ? new Date(new Date(date).setMinutes(startDate.getMinutes() + duration))
     : startDate;
-
+  // meibers
   const formattedDate = new Intl.DateTimeFormat(language, {
     timeZone,
-    dateStyle: "full",
+    dateStyle: "long",
   }).formatRange(startDate, endDate);
 
   const formattedTime = new Intl.DateTimeFormat(language, {
     timeZone,
-    timeStyle: "short",
+    timeStyle: "medium",
     hour12: timeFormat === TimeFormat.TWELVE_HOUR ? true : false,
-  })
-    .formatRange(startDate, endDate)
-    .toLowerCase();
+  }).formatRange(startDate, endDate);
+  const meibersFormatArr = formattedTime.split(/:/);
+  const meibersFormatStr =
+    `${meibersFormatArr[0]}:${meibersFormatArr[1]} Uhr bis ${meibersFormatArr[2].substr(-2, 2)}` +
+    `:${meibersFormatArr[3]}` +
+    " Uhr";
+  //console.log(meibersFormatArr);
+  //console.log(meibersFormatStr);
 
-  return { date: formattedDate, time: formattedTime };
+  //.replace(/\&thinsp;\ - &thinsp;/g, " bis ");
+  // meibers
+  // das war org und verursachte das kleien "uhr"
+  //.toLowerCase();
+  //15:00:00 – 15:30:00
+  return { date: formattedDate, time: meibersFormatStr };
 };
 
 export const FromToTime = (props: EventFromToTime) => {

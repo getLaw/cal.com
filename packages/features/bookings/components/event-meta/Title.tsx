@@ -11,9 +11,13 @@ interface EventTitleProps {
 
 export const EventTitle = ({ children, as, className }: EventTitleProps) => {
   const El = as || "h1";
-  return (
-    <El data-testid="event-title" className={classNames("text-text text-xl font-semibold", className)}>
-      {children}
-    </El>
-  );
+  console.log(children);
+  // meibers
+  if (children && !children.includes("Termin")) {
+    return (
+      <El data-testid="event-title" className={classNames("text-text text-xl font-semibold", className)}>
+        {children}
+      </El>
+    );
+  }
 };

@@ -125,7 +125,7 @@ export const EventMeta = ({
               <div dangerouslySetInnerHTML={{ __html: event.description }} />
             </EventMetaBlock>
           )}
-          <div className="space-y-4 font-medium rtl:-mr-2">
+          <div className="text-emphasis space-y-4 text-sm font-semibold rtl:-mr-2">
             {rescheduleUid && bookingData && (
               <EventMetaBlock icon="calendar">
                 {t("former_time")}
@@ -141,8 +141,8 @@ export const EventMeta = ({
                 </span>
               </EventMetaBlock>
             )}
-            {selectedTimeslot && (
-              <EventMetaBlock icon="calendar">
+            {selectedTimeslot && ( //meibers
+              <EventMetaBlock contentClassName="font-semibold text-large" icon="calendar">
                 <FromToTime
                   date={selectedTimeslot}
                   duration={selectedDuration || event.length}
@@ -157,27 +157,14 @@ export const EventMeta = ({
               className="cursor-pointer [&_.current-timezone:before]:focus-within:opacity-100 [&_.current-timezone:before]:hover:opacity-100"
               contentClassName="relative max-w-[90%]"
               icon="globe">
-              {bookerState === "booking" ? (
+              {false && bookerState === "booking" ? (
                 <>{timezone}</>
               ) : (
                 <span
                   className={`current-timezone before:bg-subtle min-w-32 -mt-[2px] flex h-6 max-w-full items-center justify-start before:absolute before:inset-0 before:bottom-[-3px] before:left-[-30px] before:top-[-3px] before:w-[calc(100%_+_35px)] before:rounded-md before:py-3 before:opacity-0 before:transition-opacity ${
                     event.lockTimeZoneToggleOnBookingPage ? "cursor-not-allowed" : ""
                   }`}>
-                  <TimezoneSelect
-                    menuPosition="fixed"
-                    timezoneSelectCustomClassname={classNames?.eventMetaTimezoneSelect}
-                    classNames={{
-                      control: () => "!min-h-0 p-0 w-full border-0 bg-transparent focus-within:ring-0",
-                      menu: () => "!w-64 max-w-[90vw]",
-                      singleValue: () => "text-text py-1",
-                      indicatorsContainer: () => "ml-auto",
-                      container: () => "max-w-full",
-                    }}
-                    value={timezone}
-                    onChange={(tz) => setTimezone(tz.value)}
-                    isDisabled={event.lockTimeZoneToggleOnBookingPage}
-                  />
+                  <p className="hidden"> meibers deleted </p>
                 </span>
               )}
             </EventMetaBlock>
@@ -185,6 +172,7 @@ export const EventMeta = ({
               <EventMetaBlock icon="user" className={`${colorClass}`}>
                 <div className="text-bookinghighlight flex items-start text-sm">
                   <p>
+                    fff
                     <SeatsAvailabilityText
                       showExact={!!seatedEventData.showAvailableSeatsCount}
                       totalSeats={eventTotalSeats}

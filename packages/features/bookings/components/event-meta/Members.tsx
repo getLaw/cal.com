@@ -1,11 +1,9 @@
 import { useIsEmbed } from "@calcom/embed-core/embed-iframe";
 import { useBookerStore } from "@calcom/features/bookings/Booker/store";
 import type { BookerEvent } from "@calcom/features/bookings/types";
-import { getUserAvatarUrl } from "@calcom/lib/getAvatarUrl";
 import { getBookerBaseUrlSync } from "@calcom/lib/getBookerUrl/client";
 import { getTeamUrlSync } from "@calcom/lib/getBookerUrl/client";
 import { SchedulingType } from "@calcom/prisma/enums";
-import { AvatarGroup } from "@calcom/ui";
 
 export interface EventMembersProps {
   /**
@@ -47,25 +45,20 @@ export const EventMembers = ({ schedulingType, users, profile, entity }: EventMe
           },
         ];
 
-  return (
-    <>
-      <AvatarGroup
-        size="sm"
-        className="border-muted"
-        items={[
-          ...orgOrTeamAvatarItem,
-          ...shownUsers.map((user) => ({
-            href: `${getBookerBaseUrlSync(user.profile?.organization?.slug ?? null)}/${
-              user.profile?.username
-            }?redirect=false`,
-            alt: user.name || "",
-            title: user.name || "",
-            image: getUserAvatarUrl(user),
-          })),
-        ]}
-      />
+  const getDateText = () => {
+    const url = new URL(window.location.href);
+    if (url.searchParams.get("slot")) {
+      return <p className="text-subtle mb-1 mt-5 text-sm font-semibold">Datum und Uhrzeit:</p>;
+    } else {
+      return <p className="text-subtle mb-2 mt-3 text-sm font-semibold">Dauer des Termins:</p>;
+    }
+  };
 
-      <p className="text-subtle mt-2 text-sm font-semibold">
+  return (
+    // meibers
+    <>
+      <p className="text-subtle mb-1 text-sm font-semibold">Termin mit:</p>
+      <p className="text-emphasis font-semibold">
         {showOnlyProfileName
           ? profile.name
           : shownUsers
@@ -73,6 +66,7 @@ export const EventMembers = ({ schedulingType, users, profile, entity }: EventMe
               .filter((name) => name)
               .join(", ")}
       </p>
+      {getDateText()}
     </>
   );
 };

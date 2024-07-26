@@ -61,7 +61,11 @@ export const EventDuration = ({
     return <>{getDurationFormatted(event.length, t)}</>;
 
   const durations = event?.metadata?.multipleDuration || [15, 30, 60, 90];
-
+  const url = new URL(window.location.href);
+  // meibers ausblenden auf formularseite
+  if (url.searchParams.get("slot")) {
+    return null;
+  }
   return (
     <div className="flex flex-wrap gap-2">
       {durations

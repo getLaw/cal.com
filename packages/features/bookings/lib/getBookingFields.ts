@@ -192,11 +192,11 @@ export const ensureBookingInputsHaveSystemFields = ({
     },
   ];
 
-  // These fields should be added after other user fields
+  // These fields should be added after other user fields // meibers
   const systemAfterFields: typeof bookingFields = [
     {
       defaultLabel: "what_is_this_meeting_about",
-      type: "text",
+      type: "textarea",
       name: "title",
       editable: "system-but-optional",
       required: true,

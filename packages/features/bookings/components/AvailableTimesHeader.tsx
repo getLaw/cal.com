@@ -32,7 +32,12 @@ export const AvailableTimesHeader = ({
   const isColumnView = layout === BookerLayouts.COLUMN_VIEW;
   const isMonthView = layout === BookerLayouts.MONTH_VIEW;
   const isToday = dayjs().isSame(date, "day");
-
+  // meibers
+  return (
+    <>
+      <p className="text-subtle mb-2 mt-2 text-sm font-semibold">Uhrzeit:</p>
+    </>
+  );
   return (
     <header
       className={classNames(

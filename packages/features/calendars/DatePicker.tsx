@@ -336,11 +336,12 @@ const DatePicker = ({
         new Date(browsingDate.year(), browsingDate.month())
       )
     : null;
-
+  // meibers
   return (
     <div className={className}>
       <div className="mb-1 flex items-center justify-between text-xl">
         <span className="text-default w-1/2 text-base">
+          <p className="text-subtle mb-[9px] mt-[9px] text-sm font-semibold">Datum:</p>
           {browsingDate ? (
             <>
               <strong

@@ -87,7 +87,9 @@ export const BookEventForm = ({
   }
 
   return (
+    // meibers
     <div className="flex h-full flex-col">
+      <p className="text-subtle mb-4 text-sm font-semibold ">Ihre Daten:</p>
       <Form
         className="flex h-full flex-col"
         onChange={() => {
@@ -141,6 +143,15 @@ export const BookEventForm = ({
             />
           </div>
         )}
+        <div className="mb-4 justify-start text-[0.75rem] font-normal leading-4">
+          Bitte füllen Sie alle mit * gekennzeichneten Felder aus. Bitte beachten Sie unsere Hinweise zum
+          <span>
+            <a rel="noopener" href="https://www.kanzlei-meibers.de/datenschutz/" target="_blank">
+              {" "}
+              <u>Datenschutz</u>.
+            </a>
+          </span>
+        </div>
         <div className="modalsticky mt-auto flex justify-end space-x-2 rtl:space-x-reverse">
           {isInstantMeeting ? (
             <Button type="submit" color="primary" loading={loadingStates.creatingInstantBooking}>
@@ -153,6 +164,7 @@ export const BookEventForm = ({
                   {t("back")}
                 </Button>
               )}
+
               <Button
                 type="submit"
                 color="primary"
@@ -169,7 +181,7 @@ export const BookEventForm = ({
                   : renderConfirmNotVerifyEmailButtonCond
                   ? isPaidEvent
                     ? t("pay_and_book")
-                    : t("confirm")
+                    : "Absenden" // meibers
                   : t("verify_email_email_button")}
               </Button>
             </>

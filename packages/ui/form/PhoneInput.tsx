@@ -58,9 +58,9 @@ function BasePhoneInput({ name, className = "", onChange, value, ...rest }: Phon
     />
   );
 }
-
+// meibers
 const useDefaultCountry = () => {
-  const [defaultCountry, setDefaultCountry] = useState("us");
+  const [defaultCountry, setDefaultCountry] = useState("de");
   const query = trpc.viewer.public.countryCode.useQuery(undefined, {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,

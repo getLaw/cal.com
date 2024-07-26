@@ -42,7 +42,8 @@ function RenderIcon({
 
 function RenderLocationTooltip({ locations }: { locations: LocationObject[] }) {
   const { t } = useLocale();
-
+  // meibers
+  return null;
   return (
     <div className="my-2 me-2 flex w-full flex-col space-y-3 break-words">
       <p>{t("select_on_next_step")}</p>
@@ -106,6 +107,9 @@ export function AvailableEventLocations({ locations }: { locations: LocationObje
 
   const filteredLocations = renderLocations.filter(excludeNullValues) as JSX.Element[];
 
+  // meibers
+
+  return null;
   return filteredLocations.length > 1 ? (
     <div className="flex flex-row items-center text-sm font-medium">
       {isPlatform ? (

@@ -32,11 +32,7 @@ import {
   TITLE_FIELD,
 } from "@calcom/features/bookings/lib/SystemField";
 import { APP_NAME } from "@calcom/lib/constants";
-import {
-  formatToLocalizedDate,
-  formatToLocalizedTime,
-  formatToLocalizedTimezone,
-} from "@calcom/lib/date-fns";
+import { formatToLocalizedDate, formatToLocalizedTime } from "@calcom/lib/date-fns";
 import useGetBrandingColours from "@calcom/lib/getBrandColours";
 import { useCompatSearchParams } from "@calcom/lib/hooks/useCompatSearchParams";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
@@ -51,7 +47,6 @@ import { trpc } from "@calcom/trpc/react";
 import {
   Alert,
   Avatar,
-  Badge,
   Button,
   EmailInput,
   HeadSeo,
@@ -450,7 +445,7 @@ export default function Success(props: PageProps) {
                           : isCancelled
                           ? seatReferenceUid
                             ? t("no_longer_attending")
-                            : t("event_cancelled")
+                            : t("event_cancelled_booking_view")
                           : isBookingInPast
                           ? t("event_expired")
                           : props.recurringBookings
@@ -474,8 +469,8 @@ export default function Success(props: PageProps) {
                           </h4>
                         )}
 
-                      <div className="border-subtle text-default mt-8 grid grid-cols-3 border-t pt-8 text-left rtl:text-right">
-                        {(isCancelled || reschedule) && cancellationReason && (
+                      <div className="border-subtle text-default mt-8 grid min-w-[640px] grid-cols-3 border-t pt-8 text-left rtl:text-right">
+                        {false && (isCancelled || reschedule) && cancellationReason && (
                           <>
                             <div className="font-medium">
                               {isCancelled ? t("reason") : t("reschedule_reason")}
@@ -483,38 +478,39 @@ export default function Success(props: PageProps) {
                             <div className="col-span-2 mb-6 last:mb-0">{cancellationReason}</div>
                           </>
                         )}
-                        <div className="font-medium">{t("what")}</div>
-                        <div className="col-span-2 mb-6 last:mb-0" data-testid="booking-title">
-                          {isRoundRobin ? bookingInfo.title : eventName}
-                        </div>
-                        <div className="font-medium">{t("when")}</div>
-                        <div className="col-span-2 mb-6 last:mb-0">
-                          {reschedule && !!formerTime && (
-                            <p className="line-through">
+                        {!isCancelled && (
+                          <>
+                            <div className="hidden">meibers</div>
+                            <div className="font-medium">{t("when")}</div>
+                            <div className="col-span-2 mb-6 last:mb-0">
+                              {reschedule && !!formerTime && (
+                                <p className="line-through">
+                                  <RecurringBookings
+                                    eventType={eventType}
+                                    duration={calculatedDuration}
+                                    recurringBookings={props.recurringBookings}
+                                    allRemainingBookings={allRemainingBookings}
+                                    date={dayjs(formerTime)}
+                                    is24h={is24h}
+                                    isCancelled={isCancelled}
+                                    tz={tz}
+                                  />
+                                </p>
+                              )}
                               <RecurringBookings
                                 eventType={eventType}
                                 duration={calculatedDuration}
                                 recurringBookings={props.recurringBookings}
                                 allRemainingBookings={allRemainingBookings}
-                                date={dayjs(formerTime)}
+                                date={date}
                                 is24h={is24h}
                                 isCancelled={isCancelled}
                                 tz={tz}
                               />
-                            </p>
-                          )}
-                          <RecurringBookings
-                            eventType={eventType}
-                            duration={calculatedDuration}
-                            recurringBookings={props.recurringBookings}
-                            allRemainingBookings={allRemainingBookings}
-                            date={date}
-                            is24h={is24h}
-                            isCancelled={isCancelled}
-                            tz={tz}
-                          />
-                        </div>
-                        {(bookingInfo?.user || bookingInfo?.attendees) && (
+                            </div>
+                          </>
+                        )}
+                        {!isCancelled && (bookingInfo?.user || bookingInfo?.attendees) && (
                           <>
                             <div className="font-medium">{t("who")}</div>
                             <div className="col-span-2 last:mb-0">
@@ -524,19 +520,12 @@ export default function Success(props: PageProps) {
                                     <span data-testid="booking-host-name" className="mr-2">
                                       {bookingInfo.user.name}
                                     </span>
-                                    <Badge variant="blue">{t("Host")}</Badge>
                                   </div>
-                                  <p className="text-default">
-                                    {bookingInfo?.userPrimaryEmail ?? bookingInfo.user.email}
-                                  </p>
                                 </div>
                               )}
                               {bookingInfo?.attendees.map((attendee) => (
-                                <div key={attendee.name + attendee.email} className="mb-3 last:mb-0">
-                                  {attendee.name && (
-                                    <p data-testid={`attendee-name-${attendee.name}`}>{attendee.name}</p>
-                                  )}
-                                  <p data-testid={`attendee-email-${attendee.email}`}>{attendee.email}</p>
+                                <div key="foooobar" className="mb-3 last:mb-0">
+                                  &nbsp;
                                 </div>
                               ))}
                             </div>
@@ -544,30 +533,7 @@ export default function Success(props: PageProps) {
                         )}
                         {locationToDisplay && !isCancelled && (
                           <>
-                            <div className="mt-3 font-medium">{t("where")}</div>
-                            <div className="col-span-2 mt-3" data-testid="where">
-                              {!rescheduleLocation || locationToDisplay === rescheduleLocationToDisplay ? (
-                                <DisplayLocation
-                                  locationToDisplay={locationToDisplay}
-                                  providerName={providerName}
-                                />
-                              ) : (
-                                <>
-                                  {!!formerTime && (
-                                    <DisplayLocation
-                                      locationToDisplay={locationToDisplay}
-                                      providerName={providerName}
-                                      className="line-through"
-                                    />
-                                  )}
-
-                                  <DisplayLocation
-                                    locationToDisplay={rescheduleLocationToDisplay}
-                                    providerName={rescheduleProviderName}
-                                  />
-                                </>
-                              )}
-                            </div>
+                            <div className="hidden">meibers</div>
                           </>
                         )}
                         {props.paymentStatus && (
@@ -594,6 +560,13 @@ export default function Success(props: PageProps) {
                           </>
                         )}
                       </div>
+                      {isCancelled && (
+                        <>
+                          <div className="mb-2 mt-2  font-medium">
+                            <p className="break-words">{t("emailed_you_and_attendees")}</p>
+                          </div>
+                        </>
+                      )}
                       <div className="text-bookingdark dark:border-darkgray-200 mt-8 text-left dark:text-gray-300">
                         {Object.entries(bookingInfo.responses).map(([name, response]) => {
                           const field = eventType.bookingFields.find((field) => field.name === name);
@@ -613,7 +586,10 @@ export default function Success(props: PageProps) {
                             return null;
 
                           const label = field.label || t(field.defaultLabel || "");
-
+                          //console.log(field.name);
+                          if (/Worum[\s]geht/.test(label)) {
+                            return null;
+                          }
                           return (
                             <>
                               <div className="text-emphasis mt-4 font-medium">{label}</div>
@@ -664,21 +640,9 @@ export default function Success(props: PageProps) {
                             <span className="text-emphasis ltr:mr-2 rtl:ml-2">
                               {t("need_to_make_a_change")}
                             </span>
-
+                            <br />
+                            <br />
                             <>
-                              {!props.recurringBookings && (
-                                <span className="text-default inline">
-                                  <span className="underline" data-testid="reschedule-link">
-                                    <Link
-                                      href={`/reschedule/${seatReferenceUid || bookingInfo?.uid}`}
-                                      legacyBehavior>
-                                      {t("reschedule")}
-                                    </Link>
-                                  </span>
-                                  <span className="mx-2">{t("or_lowercase")}</span>
-                                </span>
-                              )}
-
                               <button
                                 data-testid="cancel"
                                 className={classNames(
@@ -686,7 +650,7 @@ export default function Success(props: PageProps) {
                                   props.recurringBookings && "ltr:mr-2 rtl:ml-2"
                                 )}
                                 onClick={() => setIsCancellationMode(true)}>
-                                {t("cancel")}
+                                {t("cancel_that_booking")}
                               </button>
                             </>
                           </div>
@@ -724,6 +688,7 @@ export default function Success(props: PageProps) {
                             </span>
                             <div className="justify-left mt-1 flex text-left sm:mt-0">
                               <Link
+                                target="_blank"
                                 href={`https://calendar.google.com/calendar/r/eventedit?dates=${date
                                   .utc()
                                   .format("YYYYMMDDTHHmmss[Z]")}/${date
@@ -1068,13 +1033,11 @@ function RecurringBookings({
         {eventType.recurringEvent?.count &&
           recurringBookingsSorted.slice(0, 4).map((dateStr: string, idx: number) => (
             <div key={idx} className={classNames("mb-2", isCancelled ? "line-through" : "")}>
-              {formatToLocalizedDate(dayjs.tz(dateStr, tz), language, "full", tz)}
+              {formatToLocalizedDate(dayjs.tz(dateStr, tz), language, "short", tz)}
               <br />
-              {formatToLocalizedTime(dayjs(dateStr), language, undefined, !is24h, tz)} -{" "}
+              {formatToLocalizedTime(dayjs(dateStr), language, undefined, !is24h, tz)} bis{" "}
               {formatToLocalizedTime(dayjs(dateStr).add(duration, "m"), language, undefined, !is24h, tz)}{" "}
-              <span className="text-bookinglight">
-                ({formatToLocalizedTimezone(dayjs(dateStr), language, tz)})
-              </span>
+              <span className="text-bookinglight" />
             </div>
           ))}
         {recurringBookingsSorted.length > 4 && (
@@ -1090,7 +1053,7 @@ function RecurringBookings({
                   <div key={idx} className={classNames("mb-2", isCancelled ? "line-through" : "")}>
                     {formatToLocalizedDate(dayjs.tz(dateStr, tz), language, "full", tz)}
                     <br />
-                    {formatToLocalizedTime(dayjs(dateStr), language, undefined, !is24h, tz)} -{" "}
+                    {formatToLocalizedTime(dayjs(dateStr), language, undefined, !is24h, tz)} bis{" "}
                     {formatToLocalizedTime(
                       dayjs(dateStr).add(duration, "m"),
                       language,
@@ -1098,9 +1061,7 @@ function RecurringBookings({
                       !is24h,
                       tz
                     )}{" "}
-                    <span className="text-bookinglight">
-                      ({formatToLocalizedTimezone(dayjs(dateStr), language, tz)})
-                    </span>
+                    <span className="text-bookinglight" />
                   </div>
                 ))}
             </CollapsibleContent>
@@ -1109,14 +1070,14 @@ function RecurringBookings({
       </>
     );
   }
-
+  // meibers
   return (
     <div className={classNames(isCancelled ? "line-through" : "")}>
-      {formatToLocalizedDate(date, language, "full", tz)}
+      {formatToLocalizedDate(date, language, "long", tz)}
       <br />
-      {formatToLocalizedTime(date, language, undefined, !is24h, tz)} -{" "}
-      {formatToLocalizedTime(dayjs(date).add(duration, "m"), language, undefined, !is24h, tz)}{" "}
-      <span className="text-bookinglight">({formatToLocalizedTimezone(date, language, tz)})</span>
+      {formatToLocalizedTime(date, language, undefined, !is24h, tz)} Uhr bis{" "}
+      {formatToLocalizedTime(dayjs(date).add(duration, "m"), language, undefined, !is24h, tz)} Uhr
+      <span className="text-bookinglight">&nbsp;</span>
     </div>
   );
 }
