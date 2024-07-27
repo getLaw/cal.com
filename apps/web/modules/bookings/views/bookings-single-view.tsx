@@ -103,7 +103,7 @@ export default function Success(props: PageProps) {
   const routerQuery = useRouterQuery();
   const pathname = usePathname();
   const searchParams = useCompatSearchParams();
-  const { eventType, bookingInfo, requiresLoginToUpdate, orgSlug } = props;
+  const { eventType, bookingInfo, requiresLoginToUpdate, orgSlug, rescheduledToUid } = props;
 
   const {
     allRemainingBookings,
@@ -181,7 +181,7 @@ export default function Success(props: PageProps) {
 
   useEffect(() => {
     if (noShow) {
-      noShowMutation.mutate({ bookingUid: bookingInfo.uid });
+      noShowMutation.mutate({ bookingUid: bookingInfo.uid, noShowHost: true });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -551,6 +551,9 @@ export default function Success(props: PageProps) {
                             </div>
                           </>
                         )}
+
+                        {rescheduledToUid ? <RescheduledToLink rescheduledToUid={rescheduledToUid} /> : null}
+
                         {bookingInfo?.description && (
                           <>
                             <div className="mt-9 font-medium">{t("additional_notes")}</div>
@@ -959,6 +962,25 @@ export default function Success(props: PageProps) {
     </div>
   );
 }
+
+const RescheduledToLink = ({ rescheduledToUid }: { rescheduledToUid: string }) => {
+  const { t } = useLocale();
+  return (
+    <>
+      <div className="mt-3 font-medium">{t("rescheduled")}</div>
+      <div className="col-span-2 mb-2 mt-3">
+        <span className="underline">
+          <Link href={`/booking/${rescheduledToUid}`}>
+            <div className="flex items-center gap-1">
+              {t("view_booking")}
+              <Icon name="external-link" className="h-4 w-4" />
+            </div>
+          </Link>
+        </span>
+      </div>
+    </>
+  );
+};
 
 const DisplayLocation = ({
   locationToDisplay,
