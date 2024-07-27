@@ -117,7 +117,7 @@ const SlotItem = ({
     slot.bookingUid,
     seatsPerTimeSlot,
   ]);
-
+  // meibers
   return (
     <AnimatePresence>
       <div className="flex gap-2">
@@ -134,7 +134,7 @@ const SlotItem = ({
             `${customClassNames}`
           )}
           color="secondary">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             {!hasTimeSlots && overlayCalendarToggled && (
               <span
                 className={classNames(
@@ -144,6 +144,7 @@ const SlotItem = ({
               />
             )}
             {computedDateWithUsersTimezone.format(timeFormat)}
+            <div>Uhr</div>
           </div>
           {bookingFull && <p className="text-sm">{t("booking_full")}</p>}
           {hasTimeSlots && !bookingFull && (
@@ -282,6 +283,6 @@ export const AvailableTimesSkeleton = () => (
     {/* Random number of elements between 1 and 6. */}
     {Array.from({ length: Math.floor(Math.random() * 6) + 1 }).map((_, i) => (
       <SkeletonText className="mb-4 h-6 w-full" key={i} />
-    ))}
+    ))}{" "}
   </div>
 );

@@ -6,7 +6,7 @@ import type { BookerEvent } from "@calcom/features/bookings/types";
 import classNames from "@calcom/lib/classNames";
 import getPaymentAppData from "@calcom/lib/getPaymentAppData";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
-import { Icon, type IconName } from "@calcom/ui";
+import { type IconName } from "@calcom/ui";
 
 import { EventDetailBlocks } from "../../types";
 import { AvailableEventLocations } from "./AvailableEventLocations";
@@ -81,15 +81,16 @@ export const EventMetaBlock = ({
   isDark,
 }: EventMetaProps) => {
   if (!React.Children.count(children)) return null;
-
+  //console.log(children?.props);
   return (
-    <div
-      className={classNames(
-        "flex items-start justify-start text-sm",
-        highlight ? "text-emphasis" : "text-text",
-        className
-      )}>
-      {iconUrl ? (
+    <>
+      <div
+        className={classNames(
+          "flex items-start justify-start text-sm",
+          highlight ? "text-emphasis" : "text-text",
+          className
+        )}>
+        {/* {iconUrl ? (
         <img
           src={iconUrl}
           alt=""
@@ -107,9 +108,11 @@ export const EventMetaBlock = ({
               <Icon name={icon} className="relative z-20 mr-2 mt-[2px] h-4 w-4 flex-shrink-0 rtl:ml-2" />
             ))}
         </>
-      )}
-      <div className={classNames("relative z-10 max-w-full break-words", contentClassName)}>{children}</div>
-    </div>
+      )} */}
+
+        <div className={classNames("relative z-10 max-w-full break-words", contentClassName)}>{children}</div>
+      </div>
+    </>
   );
 };
 

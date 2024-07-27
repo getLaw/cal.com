@@ -1,0 +1,22 @@
+Hallo Johannes,
+
+die Ansichten aus den Word-Dokumenten sind angepasst soweit es möglich war.
+
+Dazu noch zwei Sachen, die mir aufgefallen sind:
+
+1.
+Die Liste unten mit "in den Kalender einfügen:", wo der Google-Link geändert wurde, wird dem extern Anfragenden nicht gezeigt. 
+Das wird nur angezeigt, wenn der Anfragende ein Konto hat und selbst einen Termin über die Oberfläche bucht ("isOwner"). 
+
+Das macht aber ja bereits die Outlookanbindung, also müssen wir das nicht anzeigen/nutzen.
+
+2.
+Die persönlichen Daten sind in allen Ansichten aus dem sichtbaren HTML raus (Absage, Absagebestätigung, Neuplanen gibt es sowieso nicht mehr).
+Allerdings bekomme ich das "ld-json"-Script nicht aus dem Quellcode. Da stehen alle Daten nochmal drin und wenn Jemand den 
+Quelltext anzeigt, wird er das sehen können.
+Das wird tiefer gelegen wohl auch für die Steuerung gebraucht, daher werde ich es wahrscheinlich nicht entfernen können.
+
+Die E-Mails sind noch nicht fertig. Da muss ich nochmal suchen, wo die im Code vergraben sind.
+Diese sehen den Web-Ansichten sehr ähnlich, sie enthalten kein ld-json. Vielleicht finde ich dabei die Stelle 
+wo das eingebunden wird. Und kann es aus den Webseiten doch noch entfernen.
+

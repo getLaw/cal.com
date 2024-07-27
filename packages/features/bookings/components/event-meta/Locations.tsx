@@ -10,7 +10,8 @@ export const EventLocations = ({ event }: { event: BookerEvent }) => {
   const { t } = useLocale();
   const locations = event.locations;
 
-  if (!locations?.length) return null;
+  // meibers
+  if (true || !locations?.length) return null;
 
   const getLocationToDisplay = (location: BookerEvent["locations"][number]) => {
     const eventLocationType = getEventLocationType(location.type);

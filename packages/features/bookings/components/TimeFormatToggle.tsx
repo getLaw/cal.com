@@ -8,7 +8,8 @@ export const TimeFormatToggle = ({ customClassName }: { customClassName?: string
   const timeFormat = useTimePreferences((state) => state.timeFormat);
   const setTimeFormat = useTimePreferences((state) => state.setTimeFormat);
   const { t } = useLocale();
-
+  // meibers
+  return null;
   return (
     <ToggleGroup
       customClassNames={customClassName}
