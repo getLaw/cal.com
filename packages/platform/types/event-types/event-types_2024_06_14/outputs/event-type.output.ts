@@ -11,10 +11,11 @@ import {
   ValidateNested,
 } from "class-validator";
 
-import type { Location_2024_06_14, BookingField_2024_06_14 } from "../inputs";
-import { Host } from "../inputs";
+import type { Location_2024_06_14, BookingField_2024_06_14, BookingWindow_2024_06_14 } from "../inputs";
+import { Host as TeamEventTypeHostInput, BookingLimitsDuration_2024_06_14 } from "../inputs";
 import { RecurringEvent_2024_06_14 } from "../inputs";
 import { ValidateBookingFields_2024_06_14 } from "../inputs/booking-fields.input";
+import type { BookingLimitsCount_2024_06_14 } from "../inputs/booking-limits-count.input";
 import { ValidateLocations_2024_06_14 } from "../inputs/locations.input";
 
 enum SchedulingTypeEnum {
@@ -137,6 +138,30 @@ export class EventTypeOutput_2024_06_14 {
 
   @IsInt()
   scheduleId!: number | null;
+
+  @IsOptional()
+  bookingLimitsCount?: BookingLimitsCount_2024_06_14;
+
+  @IsOptional()
+  @IsBoolean()
+  onlyShowFirstAvailableSlot?: boolean;
+
+  @IsOptional()
+  @Type(() => BookingLimitsDuration_2024_06_14)
+  bookingLimitsDuration?: BookingLimitsDuration_2024_06_14;
+
+  @IsOptional()
+  bookingWindow?: BookingWindow_2024_06_14;
+
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  offsetStart?: number;
+}
+
+export class TeamEventTypeResponseHost extends TeamEventTypeHostInput {
+  @IsString()
+  name!: string;
 }
 
 export class TeamEventTypeOutput_2024_06_14 {
@@ -235,11 +260,30 @@ export class TeamEventTypeOutput_2024_06_14 {
   parentEventTypeId?: number | null;
 
   @ValidateNested({ each: true })
-  @Type(() => Host)
+  @Type(() => TeamEventTypeResponseHost)
   @IsArray()
-  hosts!: Host[];
+  hosts!: TeamEventTypeResponseHost[];
 
   @IsBoolean()
   @IsOptional()
   assignAllTeamMembers?: boolean;
+
+  @IsOptional()
+  bookingLimitsCount?: BookingLimitsCount_2024_06_14;
+
+  @IsOptional()
+  @IsBoolean()
+  onlyShowFirstAvailableSlot?: boolean;
+
+  @IsOptional()
+  @Type(() => BookingLimitsDuration_2024_06_14)
+  bookingLimitsDuration?: BookingLimitsDuration_2024_06_14;
+
+  @IsOptional()
+  bookingWindow?: BookingWindow_2024_06_14;
+
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  offsetStart?: number;
 }
