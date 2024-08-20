@@ -75,12 +75,13 @@ const useDefaultCountry = () => {
 
       isSupportedCountry(data?.countryCode)
         ? setDefaultCountry(data.countryCode.toLowerCase())
-        : setDefaultCountry(navigator.language.split("-")[1]?.toLowerCase() || "us");
+        : setDefaultCountry(navigator.language.split("-")[1]?.toLowerCase() || "de"); // meibers
     },
     [query.data]
   );
 
-  return defaultCountry;
+  // meibers
+  return "de";
 };
 
 export default BasePhoneInput;
