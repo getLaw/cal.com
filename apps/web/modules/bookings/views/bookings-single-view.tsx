@@ -305,7 +305,10 @@ export default function Success(props: PageProps) {
   function getTitle(): string {
     const titleSuffix = props.recurringBookings ? "_recurring" : "";
     const titlePrefix = isRoundRobin ? "round_robin_" : "";
-    if (isCancelled) {
+    //meibers
+    const _searchParams = new URLSearchParams(searchParams ?? undefined);
+
+    if (_searchParams.get("cancel") || isCancelled) {
       return "";
     }
     if (needsConfirmation) {
@@ -377,7 +380,9 @@ export default function Success(props: PageProps) {
       return t("no_longer_attending");
     }
 
-    if (isEventCancelled) {
+    // meibers; verhindert das doppelte Dieser Termin ist abgesagt nd Termin abgesagt auf der WebAnsicht
+    // Termin absagen
+    if (isEventCancelled && false) {
       return t("event_cancelled");
     }
 
@@ -385,7 +390,7 @@ export default function Success(props: PageProps) {
       return t("event_is_in_the_past");
     }
 
-    return isRecurringBooking ? t("meeting_is_scheduled_recurring") : t("meeting_is_scheduled");
+    return isRecurringBooking ? t("meeting_is_scheduled_recurring") : "" ; // meibers t("meeting_is_scheduled");
   })();
 
   return (
@@ -485,11 +490,16 @@ export default function Success(props: PageProps) {
                           ? seatReferenceUid
                             ? t("no_longer_attending")
                             : t("event_cancelled_booking_view")
+                            // meibers - macht das doppelte Termin bestätigt weg
+                            //: ""
                           : isBookingInPast
                           ? t("event_expired")
                           : props.recurringBookings
                           ? t("meeting_is_scheduled_recurring")
-                          : t("meeting_is_scheduled")}
+                          //: t("meeting_is_scheduled")
+                          // meibers - macht das doppelte Termin bestätigt weg
+                          : ""
+                          }
                       </h3>
                       <div className="mt-3">
                         <p className="text-default">{getTitle()}</p>

@@ -11,10 +11,10 @@ interface EventTitleProps {
 
 export const EventTitle = ({ children, as, className }: EventTitleProps) => {
   const El = as || "h1";
-  //console.log(children);
+  console.log(children);
   // meibers
   //if (children && !children.includes("Termin")) {
-        const pattern = /Termin/;
+        const pattern = /.*[Tt]ermin.*/;
   if (children && !pattern.test(children)) {
     return (
       <El data-testid="event-title" className={classNames("text-text text-xl font-semibold", className)}>
