@@ -19,11 +19,42 @@ export type PhoneInputProps = {
   onChange: (value: string) => void;
 };
 
+// meibers
+const useDefaultCountry = () => {
+   // meibers
+   return "de";
+  const [defaultCountry, setDefaultCountry] = useState("de");
+  const query = trpc.viewer.public.countryCode.useQuery(undefined, {
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    retry: false,
+  });
+
+  useEffect(
+    function refactorMeWithoutEffect() {
+      const data = query.data;
+      if (!data?.countryCode) {
+        return;
+      }
+
+      isSupportedCountry(data?.countryCode)
+        ? setDefaultCountry(data.countryCode.toLowerCase())
+        : setDefaultCountry(navigator.language.split("-")[1]?.toLowerCase() || "de"); // meibers
+    },
+    [query.data]
+  );
+
+ 
+};
+
+const defaultCountry = useDefaultCountry();
+
 function BasePhoneInput({ name, className = "", onChange, value, ...rest }: PhoneInputProps) {
   return (
     <PhoneInput
       {...rest}
       value={value ? value.trim().replace(/^\+?/, "+") : undefined}
+      country={value ? undefined : defaultCountry}
       enableSearch
       disableSearchIcon
       inputProps={{
@@ -57,31 +88,6 @@ function BasePhoneInput({ name, className = "", onChange, value, ...rest }: Phon
     />
   );
 }
-// meibers
-const useDefaultCountry = () => {
-  const [defaultCountry, setDefaultCountry] = useState("de");
-  const query = trpc.viewer.public.countryCode.useQuery(undefined, {
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-    retry: false,
-  });
 
-  useEffect(
-    function refactorMeWithoutEffect() {
-      const data = query.data;
-      if (!data?.countryCode) {
-        return;
-      }
-
-      isSupportedCountry(data?.countryCode)
-        ? setDefaultCountry(data.countryCode.toLowerCase())
-        : setDefaultCountry(navigator.language.split("-")[1]?.toLowerCase() || "de"); // meibers
-    },
-    [query.data]
-  );
-
-  // meibers
-  return "de";
-};
 
 export default BasePhoneInput;

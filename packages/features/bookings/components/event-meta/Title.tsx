@@ -11,7 +11,7 @@ interface EventTitleProps {
 
 export const EventTitle = ({ children, as, className }: EventTitleProps) => {
   const El = as || "h1";
-  console.log(children);
+  //console.log(children);
   // meibers
   //if (children && !children.includes("Termin")) {
         const pattern = /.*[Tt]ermin.*/;
@@ -23,5 +23,5 @@ export const EventTitle = ({ children, as, className }: EventTitleProps) => {
     )
   } else {
           return null;
-}
+ } 
 }
