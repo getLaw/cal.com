@@ -1,4 +1,5 @@
 import { markdownToSafeHTML } from "@calcom/lib/markdownToSafeHTML";
+//import { sanitizeSubjectToMeibers } from "../../lib/sanitizeSubjectToMeibers";
 
 const Spacer = () => <p style={{ height: 6 }} />;
 
@@ -12,6 +13,34 @@ export const Info = (props: {
 }) => {
   if (!props.description || props.description === "") return null;
 
+
+
+  /*
+console.log("PROPS RAW");
+console.log(props.description.toString());
+@calcom/web:dev:   '$$typeof': Symbol(react.element),
+@calcom/web:dev:   type: 'span',
+@calcom/web:dev:   key: null,
+@calcom/web:dev:   ref: null,
+@calcom/web:dev:   props: {
+@calcom/web:dev:     'data-testid': 'when',
+@calcom/web:dev:     children: [ '', 'Freitag, 6. September 2024 | 11:15', ' - ', '11:30', ' ' ]
+@calcom/web:dev:   },
+@calcom/web:dev:   _owner: null,
+@calcom/web:dev:   _store: {}
+
+
+  
+
+  if (props.description) {
+    const descRaw = props.description;
+    const sanitizedDescription = sanitizeSubjectToMeibers(descRaw);
+  } else {
+    const sanitizedDescription = props.description;
+  }
+  */
+  console.log("DESCRIPTION");
+ 
   const descriptionCSS = "color: '#101010'; font-weight: 400; line-height: 24px; margin: 0;";
 
   const safeDescription = markdownToSafeHTML(props.description.toString()) || "";
@@ -27,7 +56,8 @@ export const Info = (props: {
             fontWeight: 400,
             lineHeight: "24px",
             whiteSpace: "pre-wrap",
-            textDecoration: props.lineThrough ? "line-through" : undefined,
+            //textDecoration: props.lineThrough ? "line-through" : undefined,
+            textDecoration: undefined,
           }}>
           {props.formatted ? (
             <p

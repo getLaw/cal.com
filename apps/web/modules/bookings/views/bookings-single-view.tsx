@@ -496,9 +496,9 @@ export default function Success(props: PageProps) {
                           ? t("event_expired")
                           : props.recurringBookings
                           ? t("meeting_is_scheduled_recurring")
-                          //: t("meeting_is_scheduled")
+                          : t("meeting_is_scheduled")
                           // meibers - macht das doppelte Termin bestätigt weg
-                          : ""
+                          //: ""
                           }
                       </h3>
                       <div className="mt-3">

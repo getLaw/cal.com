@@ -10,7 +10,8 @@ export default class AttendeeCancelledEmail extends AttendeeScheduledEmail {
         content: generateIcsString({
           event: this.calEvent,
           title: this.t("event_request_cancelled"),
-          subtitle: this.t("emailed_you_and_any_other_attendees"),
+          //subtitle: this.t("emailed_you_and_any_other_attendees"),
+          subtitle: "",
           status: "CANCELLED",
           role: "attendee",
         }),

@@ -63,7 +63,7 @@ export function LocationInfo(props: { calEvent: CalendarEvent; t: TFunction }) {
         withSpacer
         description={
           <a href={`tel:${location}`} title="Phone" style={{ color: "#3E3E3E" }}>
-            {location}
+            "Telefonat " {location}
           </a>
         }
       />

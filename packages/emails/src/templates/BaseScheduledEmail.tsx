@@ -15,6 +15,7 @@ import {
   AppsStatus,
   UserFieldsResponses,
 } from "../components";
+import { sanitizePropEmailTitleToMeibers } from "../../lib/sanitizePropEmailTitleToMeibers";
 
 export const BaseScheduledEmail = (
   props: {
@@ -23,14 +24,14 @@ export const BaseScheduledEmail = (
     timeZone: string;
     includeAppsStatus?: boolean;
     t: TFunction;
-    locale: string;
+    locale: "de";
     timeFormat: TimeFormat | undefined;
     isOrganizer?: boolean;
   } & Partial<React.ComponentProps<typeof BaseEmailHtml>>
 ) => {
   const { t, timeZone, locale, timeFormat: timeFormat_ } = props;
 
-  const timeFormat = timeFormat_ ?? TimeFormat.TWELVE_HOUR;
+  const timeFormat = timeFormat_ ?? TimeFormat.TWENTY_FOUR_HOUR;
 
   function getRecipientStart(format: string) {
     return dayjs(props.calEvent.startTime).tz(timeZone).format(format);
@@ -40,6 +41,7 @@ export const BaseScheduledEmail = (
     return dayjs(props.calEvent.endTime).tz(timeZone).format(format);
   }
 
+  /*
   const subject = t(props.subject || "confirmed_event_type_subject", {
     eventType: props.calEvent.type,
     name: props.calEvent.team?.name || props.calEvent.organizer.name,
@@ -47,31 +49,47 @@ export const BaseScheduledEmail = (
       getRecipientStart("dddd").toLowerCase()
     )}, ${t(getRecipientStart("MMMM").toLowerCase())} ${getRecipientStart("D, YYYY")}`,
   });
+*/
+
+const subjectRaw = t(props.subject || "confirmed_event_type_subject", {
+  eventType: null,
+  name: props.calEvent.team?.name || props.calEvent.organizer.name,
+  date: null,
+});
+
+//const subject = sanitizeSubjectToMeibers(subjectRaw);
+const subject = subjectRaw;
+
+
+const titleRaw = t(
+  props.title
+    ? props.title
+    : props.calEvent.recurringEvent?.count
+    ? "your_event_has_been_scheduled_recurring"
+    : "your_event_has_been_scheduled"
+);
+const titleMeibers  = titleRaw;
 
   return (
+
     <BaseEmailHtml
       hideLogo={Boolean(props.calEvent.platformClientId)}
       headerType={props.headerType || "checkCircle"}
       subject={props.subject || subject}
-      title={t(
-        props.title
-          ? props.title
-          : props.calEvent.recurringEvent?.count
-          ? "your_event_has_been_scheduled_recurring"
-          : "your_event_has_been_scheduled"
-      )}
+      title={titleMeibers}
       callToAction={
         props.callToAction === null
           ? null
           : props.callToAction || <ManageLink attendee={props.attendee} calEvent={props.calEvent} />
       }
-      subtitle={props.subtitle || <>{t("emailed_you_and_any_other_attendees")}</>}>
+      // meibers
+      subtitle={!props.calEvent.cancellationReason && props.subtitle ? props.subtitle : <>{t("emailed_you_and_any_other_attendees")}</>}>
       {props.calEvent.cancellationReason && (
         <Info
           label={t(
             props.calEvent.cancellationReason.startsWith("$RCH$")
               ? "reason_for_reschedule"
-              : "cancellation_reason"
+              : "Grund der Absage"
           )}
           description={
             !!props.calEvent.cancellationReason && props.calEvent.cancellationReason.replace("$RCH$", "")
@@ -80,13 +98,12 @@ export const BaseScheduledEmail = (
         />
       )}
       <Info label={t("rejection_reason")} description={props.calEvent.rejectionReason} withSpacer />
-      <Info label={t("what")} description={props.calEvent.title} withSpacer />
+      
       <WhenInfo timeFormat={timeFormat} calEvent={props.calEvent} t={t} timeZone={timeZone} locale={locale} />
-      <WhoInfo calEvent={props.calEvent} t={t} />
+      <Info label={"Teilnehmer"} description={sanitizePropEmailTitleToMeibers(props.calEvent.title)} withSpacer />
+
       <LocationInfo calEvent={props.calEvent} t={t} />
-      <Info label={t("description")} description={props.calEvent.description} withSpacer formatted />
-      <Info label={t("additional_notes")} description={props.calEvent.additionalNotes} withSpacer />
-      {props.includeAppsStatus && <AppsStatus calEvent={props.calEvent} t={t} />}
+      
       <UserFieldsResponses t={t} calEvent={props.calEvent} isOrganizer={props.isOrganizer} />
       {props.calEvent.paymentInfo?.amount && (
         <Info

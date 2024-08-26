@@ -63,8 +63,8 @@ export function WhenInfo(props: {
         description={
           <span data-testid="when">
             {recurringEvent?.count ? `${t("starting")} ` : ""}
-            {getRecipientStart(`dddd, LL | ${timeFormat}`)} - {getRecipientEnd(timeFormat)}{" "}
-            <span style={{ color: "#4B5563" }}>({timeZone})</span>
+            {getRecipientStart(`dddd, LL | ${timeFormat}`)} Uhr - {getRecipientEnd(timeFormat)} Uhr {" "}
+            
           </span>
         }
         withSpacer
