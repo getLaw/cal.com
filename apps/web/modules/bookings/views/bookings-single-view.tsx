@@ -614,8 +614,8 @@ export default function Success(props: PageProps) {
                       </div>
                       {isCancelled && (
                         <>
-                          <div className="mb-2 mt-2  font-medium">
-                            <p className="break-words">{t("emailed_you_and_attendees")}</p>
+                          <div className="mb-2 mt-2">
+                            <p className="break-words text-default">{t("emailed_you_and_attendees")}</p>
                           </div>
                         </>
                       )}

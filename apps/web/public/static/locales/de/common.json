@@ -410,7 +410,7 @@
   "no_meeting_found_description": "Dieser Termin existiert nicht. Kontaktieren Sie den Ersteller um einen aktuellen Link zu bekommen.",
   "no_status_bookings_yet": "Es gibt noch keine {{status}} Buchungen",
   "no_status_bookings_yet_description": "Sie haben keine {{status}} Buchungen. {{description}}",
-  "event_between_users": "{{eventName}} zwischen {{host}} und {{attendeeName}}",
+  "event_between_users": "{{host}} und {{attendeeName}}",
   "bookings": "Buchungen",
   "booking_not_found": "Termin nicht gefunden",
   "bookings_description": "Sehen Sie anstehende und vergangene Veranstaltungen, die über Ihre Events gebucht wurden.",

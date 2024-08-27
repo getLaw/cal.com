@@ -329,14 +329,14 @@ const DatePicker = ({
     <div className={className}>
       <div className="mb-1 flex items-center justify-between text-xl">
         <span className="text-default w-1/2 text-base">
-          <p className="text-subtle mb-[9px] mt-[9px] text-sm font-semibold">Datum:</p>
+          <p className="text-subtle mb-[4px] mt-[9px] text-sm font-semibold">Datum:</p>
           {browsingDate ? (
             <>
               <strong
                 className={classNames(`text-emphasis font-semibold`, customClassNames?.datePickerTitle)}>
                 {month}
               </strong>{" "}
-              <span className={classNames(`text-subtle font-medium`, customClassNames?.datePickerTitle)}>
+              <span className={classNames(`text-emphasis font-semibold`, customClassNames?.datePickerTitle)}>
                 {browsingDate.format("YYYY")}
               </span>
             </>

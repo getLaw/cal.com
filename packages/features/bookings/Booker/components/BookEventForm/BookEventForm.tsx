@@ -181,7 +181,7 @@ export const BookEventForm = ({
                   : renderConfirmNotVerifyEmailButtonCond
                   ? isPaidEvent
                     ? t("pay_and_book")
-                    : "Absenden" // meibers
+                    : "Termin buchen" // meibers
                   : t("verify_email_email_button")}
               </Button>
             </>

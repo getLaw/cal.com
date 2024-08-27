@@ -103,7 +103,7 @@ export const EventMeta = ({
     : "text-bookinghighlight";
 
   return (
-    <div className={`${classNames?.eventMetaContainer || ""} relative z-10 p-6`} data-testid="event-meta">
+    <div className={`${classNames?.eventMetaContainer || ""} relative z-10 p-4`} data-testid="event-meta">
       {isPending && (
         <m.div {...fadeInUp} initial="visible" layout>
           <EventMetaSkeleton />
@@ -125,7 +125,7 @@ export const EventMeta = ({
               <div dangerouslySetInnerHTML={{ __html: event.description }} />
             </EventMetaBlock>
           )}
-          <div className="text-emphasis space-y-4 text-sm font-semibold rtl:-mr-2">
+          <div className="text-emphasis space-y-4 font-semibold rtl:-mr-2">
             {rescheduleUid && bookingData && (
               <EventMetaBlock icon="calendar">
                 {t("former_time")}
