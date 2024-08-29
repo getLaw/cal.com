@@ -48,7 +48,7 @@ export const EventMembers = ({ schedulingType, users, profile, entity }: EventMe
   const getDateText = () => {
     const url = new URL(window.location.href);
     if (url.searchParams.get("slot")) {
-      return <p className="text-subtle mb-2 mt-3 text-sm font-semibold">Datum und Uhrzeit:</p>;
+      return <p className="text-subtle mb-1 mt-3 text-sm font-semibold">Datum und Uhrzeit:</p>;
     } else {
       return <p className="text-subtle mb-2 mt-3 text-sm font-semibold">Dauer des Termins:</p>;
     }

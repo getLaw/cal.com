@@ -518,7 +518,7 @@ export default function Success(props: PageProps) {
                           </h4>
                         )}
 
-                      <div className="border-subtle text-default mt-8 grid min-w-[640px] grid-cols-3 border-t pt-8 text-left rtl:text-right">
+                      <div className="border-subtle text-default mt-8 grid min-w-[100%] text-center md:text-left sm:grid-cols-3 border-t pt-8 rtl:text-right">
                         {false && (isCancelled || reschedule) && cancellationReason && (
                           <>
                             <div className="font-medium">
@@ -529,9 +529,8 @@ export default function Success(props: PageProps) {
                         )}
                         {!isCancelled && (
                           <>
-                            <div className="hidden">meibers</div>
-                            <div className="font-medium">{t("when")}</div>
-                            <div className="col-span-2 mb-6 last:mb-0">
+                            <div className="font-semibold mb-1">{t("when")}</div>
+                            <div className="text-center sm:text-left sm:col-span-2 mb-6 last:mb-0">
                               {reschedule && !!formerTime && (
                                 <p className="line-through">
                                   <RecurringBookings
@@ -561,11 +560,11 @@ export default function Success(props: PageProps) {
                         )}
                         {!isCancelled && (bookingInfo?.user || bookingInfo?.attendees) && (
                           <>
-                            <div className="font-medium">{t("who")}</div>
-                            <div className="col-span-2 last:mb-0">
+                            <div className="font-semibold mb-1">{t("who")}</div>
+                            <div className="text-center sm:text-left sm:col-span-2 mb-6 last:mb-0">
                               {bookingInfo?.user && (
                                 <div className="mb-3">
-                                  <div>
+                                  <div className="md:text-left">
                                     <span data-testid="booking-host-name" className="mr-2">
                                       {bookingInfo.user.name}
                                     </span>
@@ -573,7 +572,7 @@ export default function Success(props: PageProps) {
                                 </div>
                               )}
                               {bookingInfo?.attendees.map((attendee) => (
-                                <div key="foooobar" className="mb-3 last:mb-0">
+                                <div key="foobar" className="mb-3 last:mb-0">
                                   &nbsp;
                                 </div>
                               ))}

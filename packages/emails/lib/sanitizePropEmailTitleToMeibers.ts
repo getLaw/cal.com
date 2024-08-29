@@ -6,7 +6,7 @@ export const sanitizePropEmailTitleToMeibers = (propsTitleRaw: string) => {
 
   const matchTermin =  propsTitleRaw.match(/\bTermin\b/gi);
 
-  const matchLocation =  propsTitleRaw.match(/\In der Kanzlei\b/gi);
+  const matchLocation =  propsTitleRaw.match(/\bIn der Kanzlei\b/gi);
 
 
   console.log("propsTitleRaw RAW " + propsTitleRaw);
@@ -15,37 +15,37 @@ export const sanitizePropEmailTitleToMeibers = (propsTitleRaw: string) => {
 
   if (matchPhone) {
     console.log("SANITIZE PHONE propsTitleRaw");
-    sanitizedTitle = sanitizePhone(propsTitleRaw);
+    sanitizedTitle = sanitizePhone(sanitizedTitle);
   }
 
   if (matchTermin) {
     console.log("SANITIZE TERMIN propsTitleRaw");
-    sanitizedTitle = sanitizeTermin(propsTitleRaw);
+    sanitizedTitle = sanitizeTermin(sanitizedTitle);
   }  
 
   if (matchLocation) {
     console.log("SANITIZE LOCATION propsTitleRaw");
-    sanitizedTitle = sanitizeLocation(propsTitleRaw);
+    sanitizedTitle = sanitizeLocation(sanitizedTitle);
   }  
 
   return sanitizedTitle;
   
 };
 
-const sanitizePhone = (propsTitleRaw: string) => {
+const sanitizePhone = (titleRaw: string) => {
   const charsToReplace = /[;,"<>+():0-9]/g;
 
-  return propsTitleRaw.replace(charsToReplace, "");
+  return titleRaw.replace(charsToReplace, "");
 };
 
-const sanitizeTermin = (propsTitleRaw: string) => {
+const sanitizeTermin = (titleRaw: string) => {
   const charsToReplace = /\bTermin\b/gi;
 
-  return propsTitleRaw.replace(charsToReplace, "");
+  return titleRaw.replace(charsToReplace, "");
 };
 
-const sanitizeLocation = (propsTitleRaw: string) => {
-  const charsToReplace = /\(\bIn der Kanzlei\b\)/gi;
+const sanitizeLocation = (titleRaw: string) => {
+  const charsToReplace = /\bIn der Kanzlei\b/gi;
 
-  return propsTitleRaw.replace(charsToReplace, "");
+  return titleRaw.replace(charsToReplace, "").replace(/[()]/g,"");
 };
