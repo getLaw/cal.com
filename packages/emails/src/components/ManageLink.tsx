@@ -39,8 +39,9 @@ export function ManageLink(props: { calEvent: CalendarEvent; attendee: Person })
             width: "100%",
           }}>
           <>{t("need_to_make_a_change")}</>
-
+        
           {false && shouldDisplayRescheduleLink && (
+    
             <span>
               <a
                 href={rescheduleLink}
@@ -55,6 +56,7 @@ export function ManageLink(props: { calEvent: CalendarEvent; attendee: Person })
               {hasCancelLink && <>{t("or_lowercase")}</>}
             </span>
           )}
+          <br /><br />
           {hasCancelLink && (
             <span>
               <a

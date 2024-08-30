@@ -10,8 +10,8 @@ import {
   Info,
   LocationInfo,
   ManageLink,
-  WhenInfo,
-  WhoInfo,
+  WhenInfoMeibers,
+  WhoInfoMeibers,
   AppsStatus,
   UserFieldsResponses,
 } from "../components";
@@ -98,10 +98,8 @@ const titleMeibers  = titleRaw;
         />
       )}
       <Info label={t("rejection_reason")} description={props.calEvent.rejectionReason} withSpacer />
-      
-      <WhenInfo timeFormat={timeFormat} calEvent={props.calEvent} t={t} timeZone={timeZone} locale={locale} />
-      <Info label={"Teilnehmer"} description={sanitizePropEmailTitleToMeibers(props.calEvent.title)} withSpacer />
-
+      <WhenInfoMeibers timeFormat={timeFormat} calEvent={props.calEvent} t={t} timeZone={timeZone} locale={locale} />
+      <WhoInfoMeibers calEvent={props.calEvent} t={t} />
       <LocationInfo calEvent={props.calEvent} t={t} />
       
       <UserFieldsResponses t={t} calEvent={props.calEvent} isOrganizer={props.isOrganizer} />

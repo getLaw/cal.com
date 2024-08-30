@@ -5,7 +5,7 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "target": "es5",
-    "jsx": "react-jsx",
+    "jsx": "react",
     "resolveJsonModule": true
   },
   "include": [".", "../types/next-auth.d.ts"],

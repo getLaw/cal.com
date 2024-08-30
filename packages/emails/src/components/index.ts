@@ -9,6 +9,8 @@ export { LocationInfo } from "./LocationInfo";
 export { ManageLink } from "./ManageLink";
 export { default as RawHtml } from "./RawHtml";
 export { WhenInfo } from "./WhenInfo";
+export { WhenInfoMeibers } from "./WhenInfoMeibers";
 export { WhoInfo } from "./WhoInfo";
+export { WhoInfoMeibers } from "./WhoInfoMeibers";
 export { AppsStatus } from "./AppsStatus";
 export { Separator } from "./Separator";

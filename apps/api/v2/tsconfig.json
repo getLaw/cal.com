@@ -11,7 +11,7 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": ".",
-    "jsx": "react-jsx",
+    "jsx": "react",
     "paths": {
       "@/*": ["./src/*"],
       "@prisma/client/*": ["@calcom/prisma/client/*"],
