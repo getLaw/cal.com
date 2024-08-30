@@ -68,7 +68,7 @@ export function WhenInfoMeibers(props: {
         description={
           <span data-testid="when">
             {recurringEvent?.count ? `${t("starting")} ` : ""}
-            {getRecipientStart(`LL | ${timeFormat}`)} Uhr bis {getRecipientEnd(timeFormat)} Uhr {" "}
+            {getRecipientStart(`LL`)}<br />{getRecipientStart(timeFormat)} Uhr bis {getRecipientEnd(timeFormat)} Uhr {" "}
             
           </span>
         }
