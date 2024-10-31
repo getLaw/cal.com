@@ -38,6 +38,8 @@
   "email_sent": "E-Mail erfolgreich gesendet",
   "email_not_sent": "Fehler beim Senden der E-Mail aufgetreten",
   "event_declined_subject": "Abgelehnt: {{title}} am {{date}}",
+  "event_cancelled_subject": "Abgesagt: {{title}} am {{date}}",
+  "event_reassigned_subject": "Neu zugewiesen: {{title}} am {{date}}",
   "event_cancelled_subject": "Abgesagt: {{title}}",
   "event_request_declined": "Ihre Event-Anfrage wurde abgelehnt",
   "event_request_declined_recurring": "Ihre wiederkehrende Terminanfrage wurde abgelehnt",
