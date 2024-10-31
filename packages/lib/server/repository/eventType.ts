@@ -443,9 +443,11 @@ export class EventTypeRepository {
       periodCountCalendarDays: true,
       lockTimeZoneToggleOnBookingPage: true,
       requiresConfirmation: true,
+      requiresConfirmationWillBlockSlot: true,
       requiresBookerEmailVerification: true,
       recurringEvent: true,
       hideCalendarNotes: true,
+      hideCalendarEventDetails: true,
       disableGuests: true,
       minimumBookingNotice: true,
       beforeEventBuffer: true,
@@ -520,6 +522,12 @@ export class EventTypeRepository {
           name: true,
         },
       },
+      instantMeetingSchedule: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
       hosts: {
         select: {
           isFixed: true,
@@ -527,6 +535,7 @@ export class EventTypeRepository {
           priority: true,
           weight: true,
           weightAdjustment: true,
+          scheduleId: true,
         },
       },
       userId: true,
