@@ -38,6 +38,7 @@ import { useCompatSearchParams } from "@calcom/lib/hooks/useCompatSearchParams";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { useRouterQuery } from "@calcom/lib/hooks/useRouterQuery";
 import useTheme from "@calcom/lib/hooks/useTheme";
+import isSmsCalEmail from "@calcom/lib/isSmsCalEmail";
 import { getEveryFreqFor } from "@calcom/lib/recurringStrings";
 import { getIs24hClockFromLocalStorage, isBrowserLocale24h } from "@calcom/lib/timeFormat";
 import { localStorage } from "@calcom/lib/webstorage";
@@ -58,7 +59,6 @@ import {
 } from "@calcom/ui";
 import PageWrapper from "@calcom/web/components/PageWrapper";
 import CancelBooking from "@calcom/web/components/booking/CancelBooking";
-import RejectBooking from "@calcom/web/components/booking/RejectBooking";
 import EventReservationSchema from "@calcom/web/components/schemas/EventReservationSchema";
 import { timeZone } from "@calcom/web/lib/clock";
 
@@ -74,7 +74,6 @@ const querySchema = z.object({
   email: z.string().optional(),
   eventTypeSlug: z.string().optional(),
   cancel: stringToBoolean,
-  reject: stringToBoolean,
   allRemainingBookings: stringToBoolean,
   changes: stringToBoolean,
   reschedule: stringToBoolean,
@@ -111,7 +110,6 @@ export default function Success(props: PageProps) {
     allRemainingBookings,
     isSuccessBookingPage,
     cancel: isCancellationMode,
-    reject: isRejectionMode,
     formerTime,
     email,
     seatReferenceUid,
@@ -142,7 +140,7 @@ export default function Success(props: PageProps) {
 
   const attendees = bookingInfo?.attendees;
 
-  const isGmail = !!attendees.find((attendee) => attendee.email.includes("gmail.com"));
+  const isGmail = !!attendees.find((attendee) => attendee?.email?.includes("gmail.com"));
 
   const [is24h, setIs24h] = useState(
     props?.userTimeFormat ? props.userTimeFormat === 24 : isBrowserLocale24h()
@@ -158,6 +156,11 @@ export default function Success(props: PageProps) {
   const [calculatedDuration, setCalculatedDuration] = useState<number | undefined>(undefined);
   const [comment, setComment] = useState("");
   const parsedRating = rating ? parseInt(rating, 10) : 3;
+  const currentUserEmail =
+    searchParams?.get("rescheduledBy") ??
+    searchParams?.get("cancelledBy") ??
+    session?.user?.email ??
+    undefined;
 
   const defaultRating = isNaN(parsedRating) ? 3 : parsedRating > 5 ? 5 : parsedRating < 1 ? 1 : parsedRating;
   const [rateValue, setRateValue] = useState<number>(defaultRating);
@@ -202,16 +205,6 @@ export default function Success(props: PageProps) {
       if (_searchParams.get("cancel")) {
         _searchParams.delete("cancel");
       }
-    }
-
-    router.replace(`${pathname}?${_searchParams.toString()}`);
-  }
-
-  function setIsRejectionMode() {
-    const _searchParams = new URLSearchParams(searchParams ?? undefined);
-
-    if (_searchParams.get("reject")) {
-      _searchParams.delete("reject");
     }
 
     router.replace(`${pathname}?${_searchParams.toString()}`);
@@ -370,10 +363,16 @@ export default function Success(props: PageProps) {
   const isNotAttendingSeatedEvent = isCancelled && seatReferenceUid;
   const isEventCancelled = isCancelled && !seatReferenceUid;
   const isPastBooking = isBookingInPast;
+  const isRerouting = searchParams?.get("cal.rerouting") === "true";
+  const isRescheduled = bookingInfo?.rescheduled;
 
   const successPageHeadline = (() => {
     if (needsConfirmationAndReschedulable) {
       return isRecurringBooking ? t("booking_submitted_recurring") : t("booking_submitted");
+    }
+
+    if (isRerouting) {
+      return t("This meeting has been rerouted");
     }
 
     if (isNotAttendingSeatedEvent) {
@@ -413,7 +412,7 @@ export default function Success(props: PageProps) {
           <Link
             href={allRemainingBookings ? "/bookings/recurring" : "/bookings/upcoming"}
             data-testid="back-to-bookings"
-            className="hover:bg-subtle text-subtle hover:text-default mt-2 inline-flex px-1 py-2 text-sm dark:hover:bg-transparent">
+            className="hover:bg-subtle text-subtle hover:text-default mt-2 inline-flex px-1 py-2 text-sm transition dark:hover:bg-transparent">
             <Icon name="chevron-left" className="h-5 w-5 rtl:rotate-180" /> {t("back_to_bookings")}
           </Link>
         </div>
@@ -501,6 +500,7 @@ export default function Success(props: PageProps) {
                           //: ""
                           }
                       </h3>
+
                       <div className="mt-3">
                         <p className="text-default">{getTitle()}</p>
                       </div>
@@ -643,7 +643,12 @@ export default function Success(props: PageProps) {
                           }
                           return (
                             <>
-                              <div className="text-emphasis mt-4 font-medium">{label}</div>
+                              <div
+                                className="text-emphasis mt-4 font-medium"
+                                dangerouslySetInnerHTML={{
+                                  __html: label,
+                                }}
+                              />
                               <p
                                 className="text-default break-words"
                                 data-testid="field-response"
@@ -684,7 +689,7 @@ export default function Success(props: PageProps) {
                     {!requiresLoginToUpdate &&
                       (!needsConfirmation || !userIsOwner) &&
                       isReschedulable &&
-                      !isRejectionMode &&
+                      !isRerouting &&
                       (!isCancellationMode ? (
                         <>
                           <hr className="border-subtle mb-8" />
@@ -724,21 +729,21 @@ export default function Success(props: PageProps) {
                             allRemainingBookings={allRemainingBookings}
                             seatReferenceUid={seatReferenceUid}
                             bookingCancelledEventProps={bookingCancelledEventProps}
+                            currentUserEmail={currentUserEmail}
                           />
                         </>
                       ))}
-                    {userIsOwner && !isCancelled && isRejectionMode && (
-                      <>
-                        <hr className="border-subtle" />
-                        <RejectBooking
-                          booking={{
-                            id: bookingInfo.id,
-                            uid: bookingInfo?.uid,
-                            recurringEventId: bookingInfo.recurringEventId,
-                          }}
-                          setIsRejectionMode={setIsRejectionMode}
-                        />
-                      </>
+                    {isRerouting && typeof window !== "undefined" && window.opener && (
+                      <div className="flex justify-center">
+                        <Button
+                          type="button"
+                          onClick={() => {
+                            window.opener.focus();
+                            window.close();
+                          }}>
+                          Go Back
+                        </Button>
+                      </div>
                     )}
                     {userIsOwner &&
                       !needsConfirmation &&

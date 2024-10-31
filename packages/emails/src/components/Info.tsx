@@ -10,46 +10,34 @@ export const Info = (props: {
   withSpacer?: boolean;
   lineThrough?: boolean;
   formatted?: boolean;
+  isLabelHTML?: boolean;
 }) => {
   if (!props.description || props.description === "") return null;
 
-
-
-  /*
-console.log("PROPS RAW");
-console.log(props.description.toString());
-@calcom/web:dev:   '$$typeof': Symbol(react.element),
-@calcom/web:dev:   type: 'span',
-@calcom/web:dev:   key: null,
-@calcom/web:dev:   ref: null,
-@calcom/web:dev:   props: {
-@calcom/web:dev:     'data-testid': 'when',
-@calcom/web:dev:     children: [ '', 'Freitag, 6. September 2024 | 11:15', ' - ', '11:30', ' ' ]
-@calcom/web:dev:   },
-@calcom/web:dev:   _owner: null,
-@calcom/web:dev:   _store: {}
-
-
-  
-
-  if (props.description) {
-    const descRaw = props.description;
-    const sanitizedDescription = sanitizeSubjectToMeibers(descRaw);
-  } else {
-    const sanitizedDescription = props.description;
-  }
-  */
-  console.log("DESCRIPTION");
- 
-  const descriptionCSS = "color: '#101010'; font-weight: 400; line-height: 24px; margin: 0;";
-
   const safeDescription = markdownToSafeHTML(props.description.toString()) || "";
+  const safeLabel = markdownToSafeHTML(props.label.toString());
+
+  const StyledHtmlContent = ({ htmlContent }: { htmlContent: string }) => {
+    const css = "color: '#101010'; font-weight: 400; line-height: 24px; margin: 0;";
+    return (
+      <p
+        className="dark:text-darkgray-600 mt-2 text-sm text-gray-500 [&_a]:text-blue-500 [&_a]:underline [&_a]:hover:text-blue-600"
+        dangerouslySetInnerHTML={{
+          __html: htmlContent
+            .replaceAll("<p>", `<p style="${css}">`)
+            .replaceAll("<li>", `<li style="${css}">`),
+        }}
+      />
+    );
+  };
 
   return (
     <>
       {props.withSpacer && <Spacer />}
       <div>
-        <p style={{ color: "#101010" }}>{props.label}</p>
+        <p style={{ color: "#101010" }}>
+          {props.isLabelHTML ? <StyledHtmlContent htmlContent={safeLabel} /> : props.label}
+        </p>
         <p
           style={{
             color: "#101010",
@@ -59,18 +47,7 @@ console.log(props.description.toString());
             //textDecoration: props.lineThrough ? "line-through" : undefined,
             textDecoration: undefined,
           }}>
-          {props.formatted ? (
-            <p
-              className="dark:text-darkgray-600 mt-2 text-sm text-gray-500 [&_a]:text-blue-500 [&_a]:underline [&_a]:hover:text-blue-600"
-              dangerouslySetInnerHTML={{
-                __html: safeDescription
-                  .replaceAll("<p>", `<p style="${descriptionCSS}">`)
-                  .replaceAll("<li>", `<li style="${descriptionCSS}">`),
-              }}
-            />
-          ) : (
-            props.description
-          )}
+          {props.formatted ? <StyledHtmlContent htmlContent={safeDescription} /> : props.description}
         </p>
         {props.extraInfo}
       </div>

@@ -7,7 +7,7 @@ import type { BookerLayoutSettings, EventTypeMetaDataSchema } from "@calcom/pris
 import type { customInputSchema } from "@calcom/prisma/zod-utils";
 import type { eventTypeBookingFields } from "@calcom/prisma/zod-utils";
 import type { eventTypeColor } from "@calcom/prisma/zod-utils";
-import type { RouterOutputs } from "@calcom/trpc/react";
+import type { RouterOutputs, RouterInputs } from "@calcom/trpc/react";
 import type { IntervalLimit, RecurringEvent } from "@calcom/types/Calendar";
 
 export type CustomInputParsed = typeof customInputSchema._output;
@@ -20,18 +20,21 @@ export type AvailabilityOption = {
 };
 export type EventTypeSetupProps = RouterOutputs["viewer"]["eventTypes"]["get"];
 export type EventTypeSetup = RouterOutputs["viewer"]["eventTypes"]["get"]["eventType"];
+export type EventTypeApps = RouterOutputs["viewer"]["integrations"];
 export type Host = {
   isFixed: boolean;
   userId: number;
   priority: number;
   weight: number;
   weightAdjustment: number;
+  scheduleId?: number | null;
 };
 export type TeamMember = {
   value: string;
   label: string;
   avatar: string;
   email: string;
+  defaultScheduleId: number | null;
 };
 
 export type FormValues = {
@@ -48,17 +51,19 @@ export type FormValues = {
   disableGuests: boolean;
   lockTimeZoneToggleOnBookingPage: boolean;
   requiresConfirmation: boolean;
+  requiresConfirmationWillBlockSlot: boolean;
   requiresBookerEmailVerification: boolean;
   recurringEvent: RecurringEvent | null;
   schedulingType: SchedulingType | null;
   hidden: boolean;
   hideCalendarNotes: boolean;
-  hashedLink: string | undefined;
+  multiplePrivateLinks: string[] | undefined;
   eventTypeColor: z.infer<typeof eventTypeColor>;
   locations: {
     type: EventLocationType["type"];
     address?: string;
     attendeeAddress?: string;
+    somewhereElse?: string;
     link?: string;
     hostPhoneNumber?: string;
     displayLocationPublicly?: boolean;
@@ -132,3 +137,21 @@ export type FormValues = {
 };
 
 export type LocationFormValues = Pick<FormValues, "id" | "locations" | "bookingFields" | "seatsPerTimeSlot">;
+
+export type EventTypeAssignedUsers = RouterOutputs["viewer"]["eventTypes"]["get"]["eventType"]["children"];
+export type EventTypeHosts = RouterOutputs["viewer"]["eventTypes"]["get"]["eventType"]["hosts"];
+export type EventTypeUpdateInput = RouterInputs["viewer"]["eventTypes"]["update"];
+export type TabMap = {
+  advanced: React.ReactNode;
+  ai?: React.ReactNode;
+  apps?: React.ReactNode;
+  availability: React.ReactNode;
+  instant?: React.ReactNode;
+  limits: React.ReactNode;
+  recurring: React.ReactNode;
+  setup: React.ReactNode;
+  team?: React.ReactNode;
+  webhooks?: React.ReactNode;
+  workflows?: React.ReactNode;
+  payments?: React.ReactNode;
+};

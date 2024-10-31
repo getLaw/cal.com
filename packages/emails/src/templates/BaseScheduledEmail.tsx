@@ -15,6 +15,7 @@ import {
   AppsStatus,
   UserFieldsResponses,
 } from "../components";
+import { PersonInfo } from "../components/WhoInfo";
 import { sanitizePropEmailTitleToMeibers } from "../../lib/sanitizePropEmailTitleToMeibers";
 
 export const BaseScheduledEmail = (
@@ -27,6 +28,7 @@ export const BaseScheduledEmail = (
     locale: "de";
     timeFormat: TimeFormat | undefined;
     isOrganizer?: boolean;
+    reassigned?: { name: string | null; email: string; reason?: string; byUser?: string };
   } & Partial<React.ComponentProps<typeof BaseEmailHtml>>
 ) => {
   const { t, timeZone, locale, timeFormat: timeFormat_ } = props;
